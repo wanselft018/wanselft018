@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Glowly - Beauty Products Online Shop</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #fff8f5;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  header {
+    background: #f39ca0;
+    color: white;
+    padding: 20px 30px;
+    font-size: 2.25rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(243, 156, 160, 0.6);
+  }
+
+  main {
+    flex: 1;
+    display: flex;
+    gap: 20px;
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Product Grid */
+  .products {
+    flex: 3;
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(240px,1fr));
+    gap: 25px;
+  }
+
+  .product-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 6px 10px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+
+  .product-card:hover {
+    transform: translateY(-8px);
+  }
+
+  .product-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+
+  .product-info {
+    flex-grow: 1;
+    padding: 15px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .product-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: #e91e63;
+  }
+
+  .product-desc {
+    font-size: 0.9rem;
+    color: #666;
+    flex-grow: 1;
+    margin-bottom: 12px;
+  }
+
+  .product-price {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #f06292;
+  }
+
+  .btn-add {
+    margin-top: 10px;
+    background: #f06292;
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .btn-add:hover {
+    background: #e91e63;
+  }
+
+  /* Shopping Cart */
+  .cart {
+    flex: 1;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.09);
+    padding: 20px;
+    max-height: 640px;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 30px;
+  }
+
+  .cart h2 {
+    margin-top: 0;
+    color: #e91e63;
+    font-weight: 700;
+    font-size: 1.8rem;
+    border-bottom: 2px solid #f06292;
+    padding-bottom: 10px;
+  }
+
+  .cart-items {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  .cart-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 10px;
+  }
+
+  .cart-item-name {
+    flex-grow: 1;
+    font-weight: 600;
+    color: #444;
+  }
+
+  .cart-item-qty {
+    margin: 0 8px;
+    font-weight: 500;
+  }
+
+  .cart-item-price {
+    font-weight: 700;
+    color: #f06292;
+    min-width: 55px;
+    text-align: right;
+  }
+
+  .btn-remove {
+    margin-left: 10px;
+    background: transparent;
+    border: none;
+    color: #f06292;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .btn-remove:hover {
+    color: #e91e63;
+  }
+
+  .cart-total {
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: #e91e63;
+    border-top: 2px solid #f06292;
+    padding-top: 12px;
+    text-align: right;
+  }
+
+  footer {
+    text-align: center;
+    padding: 18px 10px;
+    font-size: 0.9rem;
+    color: #bbb;
+    background: #fff0f2;
+    font-weight: 500;
+  }
+
+  /* Scrollbar styling */
+  .cart-items::-webkit-scrollbar {
+    width: 8px;
+  }
+  .cart-items::-webkit-scrollbar-thumb {
+    background: #f06292;
+    border-radius: 8px;
+  }
+  .cart-items::-webkit-scrollbar-track {
+    background: #ffe6f0;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    main {
+      flex-direction: column;
+      padding: 20px;
+    }
+    .cart {
+      position: relative;
+      max-height: none;
+      margin-top: 30px;
+    }
+  }
+</style>
+</head>
+<body>
+<header>Glowly</header>
+<main>
+  <section class="products" aria-label="Products list">
+    <!-- Products will be injected here by JS -->
+  </section>
+  <aside class="cart" aria-label="Shopping cart">
+    <h2>Your Cart</h2>
+    <div class="cart-items" tabindex="0">
+      <p id="empty-cart-text">Your cart is empty.</p>
+      <!-- Cart items injected here -->
+    </div>
+    <div class="cart-total" aria-live="polite">Total: $0.00</div>
+  </aside>
+</main>
+<footer>
+  &copy; 2024 Glowly Beauty Shop. Crafted with ❤️
+</footer>
+
+<script>
+  const products = [
+    {
+      id: 'p1',
+      name: 'Hydrating Rose Facial Mist',
+      desc: 'Refreshing facial mist infused with rose water for glowing skin.',
+      price: 14.99,
+      img: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80'
+    },
+    {
+      id: 'p2',
+      name: 'Vitamin C Glow Serum',
+      desc: 'Brightening serum with vitamin C to reduce dullness and dark spots.',
+      price: 29.95,
+      img: 'https://images.unsplash.com/photo-1510414696678-2415ad8474aa?auto=format&fit=crop&w=400&q=80'
+    },
+    {
+      id: 'p3',
+      name: 'Luxury Lavender Night Cream',
+      desc: 'Rich moisturizing cream with lavender scent to nourish skin overnight.',
+      price: 34.50,
+      img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80'
+    },
+    {
+      id: 'p4',
+      name: 'Natural Shea Butter',
+      desc: 'Pure shea butter for skin hydration and softness.',
+      price: 19.00,
+      img: 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=400&q=80'
+    },
+    {
+      id: 'p5',
+      name: 'Gentle Foaming Cleanser',
+      desc: 'Daily cleanser that gently removes impurities without drying out your skin.',
+      price: 12.75,
+      img: 'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=400&q=80'
+    },
+    {
+      id: 'p6',
+      name: 'Brightening Eye Cream',
+      desc: 'Lightweight eye cream that reduces dark circles and puffiness.',
+      price: 22.40,
+      img: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=400&q=80'
+    }
+  ];
+
+  const productContainer = document.querySelector('.products');
+  const cartItemsContainer = document.querySelector('.cart-items');
+  const cartTotalLabel = document.querySelector('.cart-total');
+  const emptyCartText = document.getElementById('empty-cart-text');
+
+  let cart = {};
+
+  function formatPrice(num) {
+    return '$' + num.toFixed(2);
+  }
+
+  function renderProducts() {
+    productContainer.innerHTML = '';
+    products.forEach(product => {
+      const card = document.createElement('article');
+      card.className = 'product-card';
+
+      card.innerHTML = `
+        <img class="product-image" src="${product.img}" alt="${product.name}" loading="lazy" />
+        <div class="product-info">
+          <h3 class="product-name">${product.name}</h3>
+          <p class="product-desc">${product.desc}</p>
+          <div>
+            <span class="product-price">${formatPrice(product.price)}</span>
+            <button class="btn-add" aria-label="Add ${product.name} to cart">Add to Cart</button>
+          </div>
+        </div>
+      `;
+
+      const button = card.querySelector('.btn-add');
+      button.addEventListener('click', () => addToCart(product.id));
+
+      productContainer.appendChild(card);
+    });
+  }
+
+  function addToCart(productId) {
+    if(cart[productId]) {
+      cart[productId].qty += 1;
+    } else {
+      const product = products.find(p => p.id === productId);
+      cart[productId] = { ...product, qty: 1 };
+    }
+    renderCart();
+  }
+
+  function removeFromCart(productId) {
+    if(cart[productId]) {
+      cart[productId].qty -= 1;
+      if(cart[productId].qty <= 0) {
+        delete cart[productId];
+      }
+      renderCart();
+    }
+  }
+
+  function renderCart() {
+    cartItemsContainer.innerHTML = '';
+    const cartEntries = Object.values(cart);
+
+    if(cartEntries.length === 0) {
+      emptyCartText.style.display = 'block';
+      cartTotalLabel.textContent = 'Total: $0.00';
+      return;
+    } else {
+      emptyCartText.style.display = 'none';
+    }
+
+    let total = 0;
+
+    cartEntries.forEach(item => {
+      total += item.qty * item.price;
+
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'cart-item';
+
+      itemDiv.innerHTML = `
+        <span class="cart-item-name">${item.name}</span>
+        <span class="cart-item-qty" aria-label="Quantity">${item.qty}</span>
+        <span class="cart-item-price">${formatPrice(item.qty * item.price)}</span>
+        <button class="btn-remove" aria-label="Remove one ${item.name} from cart">&times;</button>
+      `;
+
+      const btnRemove = itemDiv.querySelector('.btn-remove');
+      btnRemove.addEventListener('click', () => removeFromCart(item.id));
+
+      cartItemsContainer.appendChild(itemDiv);
+    });
+
+    cartTotalLabel.textContent = `Total: ${formatPrice(total)}`;
+  }
+
+  renderProducts();
+  renderCart();
+</script>
+</body>
+</html>
+
